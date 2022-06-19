@@ -27,7 +27,10 @@ export class FakeChatClient implements IChatClient {
   private realtimeNotificationsEnabled = false;
   private threadClients: FakeChatThreadClient[] = [];
 
-  constructor(private model: Model, private userId: CommunicationIdentifier) {}
+  constructor(private model: Model, private userId: CommunicationIdentifier) {
+    this.userId = userId;
+    this.model = model;
+  }
 
   getChatThreadClient(threadId: string): ChatThreadClient {
     this.model.checkedGetThread(this.userId, threadId);

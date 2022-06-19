@@ -11,7 +11,9 @@ import { NetworkEventModel, Thread } from './types';
 export class Model {
   private threadMap: Record<string, { thread: Thread; eventEmitter: ThreadEventEmitter }> = {};
 
-  constructor(private networkEventModel: NetworkEventModel) {}
+  constructor(private networkEventModel: NetworkEventModel) {
+    this.networkEventModel = networkEventModel;
+  }
 
   public addThread(thread: Thread) {
     this.threadMap[thread.id] = { thread, eventEmitter: new ThreadEventEmitter(this.networkEventModel) };

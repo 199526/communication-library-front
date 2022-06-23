@@ -183,20 +183,47 @@ const MessageBubble = (props: ChatMessageComponentAsMessageBubbleProps): JSX.Ele
     <>
       <div ref={messageRef}>
         <Chat.Message
+          header={{ tabIndex: -1 }}
           data-ui-id="chat-composite-message"
           className={mergeStyles(messageContainerStyle as IStyle)}
           styles={messageContainerStyle}
           content={
-            <div>
+            <div tabIndex={1}>
               <ChatMessageContent message={message} liveAuthorIntro={strings.liveAuthorIntro} />
               {props.onRenderFileDownloads
                 ? props.onRenderFileDownloads(userId, message)
                 : defaultOnRenderFileDownloads()}
             </div>
           }
-          author={<Text className={chatMessageDateStyle}>{message.senderDisplayName}</Text>}
+          author={
+            <Text
+              tabIndex={-1}
+              onFocus={(e: React.FocusEvent<HTMLDivElement>) => {
+                e.target.blur();
+              }}
+              onFocusCapture={(e: React.FocusEvent<HTMLDivElement>) => {
+                e.target.blur();
+              }}
+              className={chatMessageDateStyle}
+            >
+              {message.senderDisplayName}
+            </Text>
+          }
           mine={message.mine}
-          timestamp={<Text data-ui-id={ids.messageTimestamp}>{formattedTimestamp}</Text>}
+          timestamp={
+            <Text
+              tabIndex={-1}
+              onFocus={(e: React.FocusEvent<HTMLDivElement>) => {
+                e.target.blur();
+              }}
+              onFocusCapture={(e: React.FocusEvent<HTMLDivElement>) => {
+                e.target.blur();
+              }}
+              data-ui-id={ids.messageTimestamp}
+            >
+              {formattedTimestamp}
+            </Text>
+          }
           details={
             messageStatus === 'failed' ? (
               <div className={chatMessageFailedTagStyle(theme)}>{strings.failToSendTag}</div>

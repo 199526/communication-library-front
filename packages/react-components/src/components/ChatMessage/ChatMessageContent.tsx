@@ -31,23 +31,12 @@ export const ChatMessageContent = (props: ChatMessageContentProps): JSX.Element 
 
 const MessageContentAsRichTextHTML = (message: ChatMessage, liveAuthorIntro: string): JSX.Element => {
   const htmlToReactParser = new Parser();
-  const liveAuthor = _formatString(liveAuthorIntro, { author: `${message.senderDisplayName}` });
-  return (
-    <div data-ui-status={message.status}>
-      <LiveMessage
-        message={`${message.mine ? '' : liveAuthor} ${extractContent(message.content || '')}`}
-        aria-live="polite"
-      />
-      {htmlToReactParser.parse(message.content)}
-    </div>
-  );
+  return <div data-ui-status={message.status}>{htmlToReactParser.parse(message.content)}</div>;
 };
 
 const MessageContentAsText = (message: ChatMessage, liveAuthorIntro: string): JSX.Element => {
-  const liveAuthor = _formatString(liveAuthorIntro, { author: `${message.senderDisplayName}` });
   return (
     <div data-ui-status={message.status}>
-      <LiveMessage message={`${message.mine ? '' : liveAuthor} ${message.content}`} aria-live="polite" />
       <Linkify
         componentDecorator={(decoratedHref: string, decoratedText: string, key: number) => {
           return (
@@ -61,11 +50,4 @@ const MessageContentAsText = (message: ChatMessage, liveAuthorIntro: string): JS
       </Linkify>
     </div>
   );
-};
-
-// https://stackoverflow.com/questions/28899298/extract-the-text-out-of-html-string-using-javascript
-const extractContent = (s: string): string => {
-  const span = document.createElement('span');
-  span.innerHTML = s;
-  return span.textContent || span.innerText;
 };
